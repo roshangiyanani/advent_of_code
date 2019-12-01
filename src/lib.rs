@@ -10,7 +10,9 @@ pub trait Solution<const ID: u8> {
     fn solve(input: &Path) -> Result<(String, String), String>;
 }
 
-pub fn get_input_file<S: Solution<{ ID }>, const ID: u8>(resources_folder: &Path) -> PathBuf {
+pub fn get_input_file<S: Solution<{ ID }>, const ID: u8>(
+    resources_folder: &Path,
+) -> PathBuf {
     let file = format!("day{:02}.input.txt", ID);
     resources_folder.join(file)
 }
@@ -29,7 +31,9 @@ pub fn run<S: Solution<{ ID }>, const ID: u8>(resources: &Path) {
     }
 }
 
-pub fn read_lines(path: &Path) -> Result<Lines<BufReader<File>>, std::io::Error> {
+pub fn read_lines(
+    path: &Path,
+) -> Result<Lines<BufReader<File>>, std::io::Error> {
     let file = File::open(path)?;
     let buf = BufReader::new(file);
     Ok(buf.lines())
