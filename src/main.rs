@@ -1,4 +1,7 @@
 #![feature(const_generics)]
+#![feature(test)]
+
+extern crate test;
 
 mod lib;
 use lib::run;

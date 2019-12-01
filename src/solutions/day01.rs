@@ -89,6 +89,10 @@ impl Solution<1> for Day01 {
 mod tests {
     use super::*;
 
+    use crate::lib::get_input_file;
+
+    use test::Bencher;
+
     #[test]
     fn to_module() {
         let val = Module::try_from("123").unwrap();
@@ -132,5 +136,30 @@ mod tests {
         let calculated_fuel_requirement = Day01::part_b(modules.iter());
         let fuel_requirement = vec![2, 966, 50346].iter().sum();
         assert_eq!(calculated_fuel_requirement, fuel_requirement);
+    }
+
+    fn init() -> Vec<Module> {
+        let resources = Path::new("./resources");
+        let input = get_input_file::<Day01, 1>(resources);
+        let lines = read_lines(&input)
+            .or_else(|err| Err(err.to_string()))
+            .unwrap();
+        lines
+            .map(|x| x.expect("error reading from file"))
+            .map(Module::try_from)
+            .map(|x| x.expect("invalid module mass"))
+            .collect()
+    }
+
+    #[bench]
+    fn part_a_full(b: &mut Bencher) {
+        let modules = init();
+        b.iter(|| assert_eq!(Day01::part_a(modules.iter()), 3267638));
+    }
+
+    #[bench]
+    fn part_b_full(b: &mut Bencher) {
+        let modules = init();
+        b.iter(|| assert_eq!(Day01::part_b(modules.iter()), 4898585));
     }
 }
